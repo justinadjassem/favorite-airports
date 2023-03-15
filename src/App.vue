@@ -4,6 +4,9 @@
       <airport-card :airport="airport" @click="addToFavorite(airport)"/>
     </div>
     <h2 v-if="isFavorite()">Favorites</h2>
+    <div v-for="airport in getFavorite" :key="airport.abbreviation">
+      <airport-card :airport="airport"  />
+    </div>
   </div>
 </template>
 <script lang="ts">
