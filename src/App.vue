@@ -1,13 +1,17 @@
 <template>
  <div class="wrapper">
     <div v-for="airport in airports" :key="airport.abbreviation">
-      <airport-card :airport="airport" />
+      <airport-card :airport="airport" @click="addToFavorite(airport)"/>
     </div>
+    <h2 v-if="isFavorite()">Favorites</h2>
   </div>
 </template>
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
 import AirportCard from "./components/airport-card/airport-card.vue";
+import { allAirports } from "./data/airports";
+import { mapActions,mapGetters } from "vuex";
+import { airport } from "./models/airports";
 export default Vue.extend({
  name: "App",
  components: {
@@ -18,46 +22,24 @@ export default Vue.extend({
  },
  data(){
   return {
-    airports : [
-    {
-      name: 'Cincinnati/Northern Kentucky International Airport',
-      abbreviation: 'CVG',
-      city: 'Hebron',
-      state: 'KY'
-    },
-    {
-      name: 'Seattle-Tacoma International Airport',
-      abbreviation: 'SEA',
-      city: 'Seattle',
-      state: 'WA',
-    },
-    {
-      name: 'Minneapolis-Saint Paul International Airport',
-      abbreviation: 'MSP',
-      city: 'Bloomington',
-      state: 'MN',
-    },
-    {
-      name: 'Louis Armstrong New Orleans International Airport',
-      abbreviation: 'MSY',
-      city: 'New Orleans',
-      state: 'LA',
-    },
-    {
-      name: `Chicago O'hare International Airport`,
-      abbreviation: 'ORD',
-      city: 'Chicago',
-      state: 'IL',
-    },
-    {
-      name: `Miami International Airport`,
-      abbreviation: 'MIA',
-      city: 'Miami',
-      state: 'FL',
-    }
-    ]
+    airports: allAirports,
   }
- }
+ },
+ computed: {
+  ...mapGetters("airport", ["getFavorite"])
+},
+ methods:{
+  ...mapActions("airport", ["setFavorite"]),
+  addToFavorite(theFavorite: airport){
+    this.setFavorite(theFavorite )
+    console.log(theFavorite)
+  },
+  isFavorite(){
+      if( this.getFavorite?.length){
+        return true
+      }
+    }
+}
 
 })
 </script>

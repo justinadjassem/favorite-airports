@@ -1,12 +1,21 @@
 import Vue from "vue";
-import Vuex from "vuex";
-
+import Vuex, { StoreOptions } from "vuex";
+import  { RootState } from './types'
+import { airport } from "./modules/airport";
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
+const store: StoreOptions<RootState> = {
+  state: {
+    version: '1.0.0'
+  },
+  modules: {
+    airport: airport 
+
+  },
+
   getters: {},
   mutations: {},
-  actions: {},
-  modules: {},
-});
+  devtools: false
+}
+
+export default new Vuex.Store<RootState>(store)
